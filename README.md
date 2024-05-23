@@ -1,0 +1,2 @@
+# CoinsBot
+Official CoinsBot Fix
