@@ -11,7 +11,7 @@ exports.help = {
   category: 'Casino'
 }
 exports.run = async (bot, message, args, config, data) => {
-    let salaire = ""
+    let salaire = "", coinsSalaire = 0
     if (cooldownsReputation.has(message.author.id)) {
         const cooldownExpiration = cooldownsReputation.get(message.author.id) + cooldownTime;
         const remainingCooldown = cooldownExpiration - Math.floor(Date.now() / 1000);
@@ -34,15 +34,17 @@ exports.run = async (bot, message, args, config, data) => {
     let maximum = JSON.parse(data.gain).workMax
 
     const randomnumber = between(minimum, maximum)
-    const req = bot.db.prepare(`SELECT * FROM entreprise WHERE user LIKE '%${message.author.id}%'`)
-    if(req.user) salaire += `**:moneybag: Salaire de votre entreprise Le dur travail**\nVous remportez \`${req.salaire} coins\` de salaire !`
-    let coinsSalaire = req.salaire || 0
+    const req = bot.db.prepare('SELECT * FROM entreprise WHERE id = ?').get(bot.functions.checkUser(bot, message, args, message.author.id).entrepot)
+    if(req?.salaire) salaire += `**:moneybag: Salaire de votre entreprise Le dur travail**\nVous remportez \`${req.salaire} coins\` de salaire !`
+    if(req?.work == 0) bot.db.prepare(`UPDATE entreprise SET work = @salaire, argent = @argent WHERE author = @id`).run({ salaire: Math.round(10), id: message.author.id, argent: req.argent + req.batiments * 500 - req.batiments * 50 })
+    if(req?.argent > req?.salaire) coinsSalaire = req.salaire, bot.db.prepare(`UPDATE entreprise SET work = @salaire, argent = @argent WHERE author = @id`).run({ salaire: Math.round(10), id: message.author.id, argent: req.argent - req.salaire}), bot.db.prepare(`UPDATE entreprise SET work = @salaire WHERE author = @id`).run({ salaire: Math.round(req.work - 1), id: message.author.id })
     bot.functions.addCoins(bot, message, args, message.author.id, randomnumber + coinsSalaire, 'coins')
     let embed5 = new Discord.EmbedBuilder()
       .setColor(data.color)
       .setTitle(`Work`)
-      .setDescription(`**${text[Math.floor(Math.random() * 15) + 1].replace('{coinsText}', randomnumber)}**`)
+      .setDescription(`**${text[Math.floor(Math.random() * 15) + 1].replace('{coinsText}', randomnumber)}\n\n${salaire}**`)
       .setFooter({ text: `${message.member.user.username}`, iconURL: message.member.user.displayAvatarURL({ dynamic: true }) })
+
     message.reply({ embeds: [embed5], allowedMentions: { repliedUser: false } })
     cooldownsReputation.set(message.author.id, Math.floor(Date.now() / 1000));
     bot.functions.checkLogs(bot, message, args, message.guild.id, randomnumber, 'work')

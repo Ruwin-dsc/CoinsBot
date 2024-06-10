@@ -5,7 +5,7 @@ exports.help = {
   aliases: ['dropmoney'],
   description: 'Envois de l\'argent à un autre joueur',
   use: 'drop 100 <#channel / none>',
-  whitelist: true,
+  perm: 'WHITELIST',
   category: 'Jeux'
 }
 exports.run = async (bot, message, args, config, data) => {

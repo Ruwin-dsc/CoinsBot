@@ -9,7 +9,7 @@ function checkuser(bot, message, args, userId) {
     } else return req
 }
 
-function checkguild(bot, message, args, guildId) {
+function checkguild(bot, message, guildId) {
     let req = bot.db.prepare('SELECT * FROM guild WHERE id = ?').get(guildId)
     if(!req) {
         bot.db.exec(`INSERT INTO guild (id) VALUES ('${guildId}')`);
@@ -167,11 +167,11 @@ function checklogs(bot, message, args, guildId, coins, type, color) {
 function addminerais(bot, message, args, userId, number, type) {
     const req = checkuser(bot, message, args, userId)
     const json = {
-        "wagon": type == "wagon" ? JSON.parse(req.wagon) + number : JSON.parse(req.wagon),
-        "charbon": type == "charbon" ? JSON.parse(req.charbon) + number : JSON.parse(req.charbon),
-        "fer": type == "fer" ? JSON.parse(req.fer) + number : JSON.parse(req.fer),
-        "or": type == "or" ? JSON.parse(req.or) + number : JSON.parse(req.or),
-        "diamant": type == "diamant" ? JSON.parse(req.diamant) + number : JSON.parse(req.diamant)
+        "wagon": type == "wagon" ? JSON.parse(req.minerais).wagon + number : JSON.parse(req.minerais).wagon,
+        "charbon": type == "charbon" ? JSON.parse(req.minerais).charbon + number : JSON.parse(req.minerais).charbon,
+        "fer": type == "fer" ? JSON.parse(req.minerais).fer + number : JSON.parse(req.minerais).fer,
+        "or": type == "or" ? JSON.parse(req.minerais).or + number : JSON.parse(req.minerais).or,
+        "diamant": type == "diamant" ? JSON.parse(req.minerais).diamant + number : JSON.parse(req.minerais).diamant
     }
 
     bot.db.prepare(`UPDATE user SET minerais = @minerais WHERE id = @id`).run({ minerais: JSON.stringify(json), id: userId});
@@ -180,11 +180,11 @@ function addminerais(bot, message, args, userId, number, type) {
 function removeminerais(bot, message, args, userId, number, type) {
     const req = checkuser(bot, message, args, userId)
     const json = {
-        "wagon": type == "wagon" ? JSON.parse(req.wagon) - number : JSON.parse(req.wagon),
-        "charbon": type == "charbon" ? JSON.parse(req.charbon) - number : JSON.parse(req.charbon),
-        "fer": type == "fer" ? JSON.parse(req.fer) - number : JSON.parse(req.fer),
-        "or": type == "or" ? JSON.parse(req.or) - number : JSON.parse(req.or),
-        "diamant": type == "diamant" ? JSON.parse(req.diamant) - number : JSON.parse(req.diamant)
+        "wagon": type == "wagon" ? JSON.parse(req.minerais).wagon - number : JSON.parse(req.minerais).wagon,
+        "charbon": type == "charbon" ? JSON.parse(req.minerais).charbon - number : JSON.parse(req.minerais).charbon,
+        "fer": type == "fer" ? JSON.parse(req.minerais).fer - number : JSON.parse(req.minerais).fer,
+        "or": type == "or" ? JSON.parse(req.minerais).or - number : JSON.parse(req.minerais).or,
+        "diamant": type == "diamant" ? JSON.parse(req.minerais).diamant - number : JSON.parse(req.minerais).diamant
     }
 
     bot.db.prepare(`UPDATE user SET minerais = @minerais WHERE id = @id`).run({ minerais: JSON.stringify(json), id: userId});

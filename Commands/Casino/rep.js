@@ -29,7 +29,7 @@ exports.run = async (bot, message, args, config, data) => {
         }
     }
     if (!args[0]) return message.reply({ content: ":x: `ERROR:` Veuillez mentionner un membre ou préciser l'ID d'une team !", allowedMentions: { repliedUser: false } })
-        if (message.mentions.members.first()) {
+        if (message.mentions.members.first() || message.guild.members.cache.get(args[0])) {
             let member = message.mentions.members.first() || message.guild.members.cache.get(args[0])
             if (!member || member.user.bot) return message.reply({ content: ":x: `ERROR:` Pas de membre trouvé !", allowedMentions: { repliedUser: false } })
             if (member.user.id === message.author.id) return message.channel.send(":x: Vous ne pouvez pas voter pour vous-même !")

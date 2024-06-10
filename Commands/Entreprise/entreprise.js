@@ -109,7 +109,7 @@ exports.run = async (bot, message, args, config, data) => {
             }
         } else if(i.customId == 'manageEntreprise') {
             if(i.values[0] == "rename") {
-                i.reply({ content: `📃 Veuillez entrer le nouveau nom de l'entreprise:\n*(Tapez \`cancel\` pour annuler l'action en cours)*`, ephemeral: true })
+                await i.reply({ content: `📃 Veuillez entrer le nouveau nom de l'entreprise:\n*(Tapez \`cancel\` pour annuler l'action en cours)*`, ephemeral: true })
                 const filter2 = response => response.author.id === i.user.id;
     
                 const collector = i.channel.createMessageCollector({ filter2, time: 60000, max: 1 });
@@ -125,7 +125,7 @@ exports.run = async (bot, message, args, config, data) => {
                 .setColor(data.color)
                 .setFooter({ text: `${message.member.user.username}`, iconURL: message.member.user.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`:coin: \`${req.argent} coins\` ont été retiré de votre entrepôt !`)
-                .setThumbnail('https://media.discordapp.net/attachments/1002173915549937715/1028683967710380072/unknown.png?ex=66671599&is=6665c419&hm=724db745a00d160b997527ea0f91c2918cc637ab48bfc0a0e4fe0d2b6847d59e&=&format=webp&quality=lossless&width=921&height=921')
+                .setThumbnail('https://media.discordapp.net/attachments/1249042420163674153/1249464306291179581/unknown.png?ex=666765d0&is=66661450&hm=403f9b4a9d866328c3ee28b64781fbfa7ecef778447b37e3dc8014c9727ac002&=&format=webp&quality=lossless&width=921&height=921')
 
                 bot.db.prepare(`UPDATE entreprise SET argent = @argent WHERE author = @id`).run({ argent: 0, id: message.author.id })
                 bot.functions.addCoins(bot, message, args, message.author.id, req.argent, 'coins')
@@ -133,10 +133,10 @@ exports.run = async (bot, message, args, config, data) => {
                 i.reply({ embeds: [embed], ephemeral: true })
             } else if(i.values[0] == "buy") {
                 if(Math.pow(2, req.batiments) * 1000 > req.argent) return i.reply({ content: `:x: Vous n'avez pas assez de coins en entrepot d'entreprise pour construire le prochain bâtiment !`})
-                else bot.db.prepare(`UPDATE entreprise SET batiments = @salaire, argent = @argent WHERE author = @id`).run({ salaire: req.batiments + 1, argent: req.argent - (Math.pow(2, req.batiments) * 1000), id: message.author.id }), req = bot.db.prepare('SELECT * FROM entreprise WHERE author = ?').get(message.author.id), msg.edit({ embeds: [embed()]})
+                else bot.db.prepare(`UPDATE entreprise SET batiments = @salaire, argent = @argent WHERE author = @id`).run({ salaire: Math.round(req.batiments + 1), argent: req.argent - (Math.pow(2, req.batiments) * 1000), id: message.author.id }), req = bot.db.prepare('SELECT * FROM entreprise WHERE author = ?').get(message.author.id), msg.edit({ embeds: [embed()]})
             } else if(i.values[0] == "sell") {
                 if(req.batiments == 1) return i.reply({ content: `:x: Vous n'avez pas de bâtiment à vendre !`})
-                else bot.db.prepare(`UPDATE entreprise SET batiments = @salaire WHERE author = @id`).run({ salaire: req.batiments - 1, id: message.author.id }), bot.functions.addCoins(bot, message, args, message.author.id, 1000, 'coins'), req = bot.db.prepare('SELECT * FROM entreprise WHERE author = ?').get(message.author.id), msg.edit({ embeds: [embed()]})
+                else bot.db.prepare(`UPDATE entreprise SET batiments = @salaire WHERE author = @id`).run({ salaire: Math.round(req.batiments - 1), id: message.author.id }), bot.functions.addCoins(bot, message, args, message.author.id, 1000, 'coins'), req = bot.db.prepare('SELECT * FROM entreprise WHERE author = ?').get(message.author.id), msg.edit({ embeds: [embed()]})
             }
         }
     })
@@ -153,8 +153,8 @@ exports.run = async (bot, message, args, config, data) => {
         .setFooter({ text: `${message.member.user.username}`, iconURL: message.member.user.displayAvatarURL({ dynamic: true }) })
         .setDescription(`
         **Statut:** ${progressBar}
-        ┖ Argent dans l'entrepot de team: ${req.argent} / ${JSON.parse(data.gain).entrepriseMax}
-        ┖ Revenu net: **${((req.batiments * 500) - (req.batiments * 50)) * 1.06 - req.salaire * 10} coins**
+        ┖ Argent dans l'entrepot de team: ${Math.round(req.argent)} / ${JSON.parse(data.gain).entrepriseMax}
+        ┖ Revenu net: **${((req.batiments * 500) - (req.batiments * 50)) * JSON.parse(req.user).length == 0 ? 1 : 1 + 0.012 * JSON.parse(req.user).length - req.salaire * 10} coins**
         \`\`\` \`\`\`\n# Propriétaire de l'entreprise: <@${req.author}>
         - :factory: **__Nombre de batiments:__ ${req.batiments}**
          - Revenu: \`+ ${req.batiments * 500} coins\`
@@ -162,7 +162,7 @@ exports.run = async (bot, message, args, config, data) => {
     
         - 🦺 **__Employé:__ ${JSON.parse(req.user).length}**
          - Salaire: \`- ${JSON.parse(req.user).length * req.salaire} coins\` (${req.salaire} / employé)\n - Multiplicateur: \`x ${JSON.parse(req.user).length == 0 ? 1 : 1 + 0.012 * JSON.parse(req.user).length}\`\n
-        > **L'entrepôt de l'entreprise se remplira de \`${req.batiments * 500 - req.batiments * 50} coins\` dans ${req.work} \`work\`**
+        > **L'entrepôt de l'entreprise se remplira de \`${req.batiments * 500 - req.batiments * 50} coins\` dans ${Math.round(req.work)} \`work\`**
     
         > Chaque employé gagne **${req.salaire} coins** de l'entrepot d'entreprise à chaque \`work\`
         `)

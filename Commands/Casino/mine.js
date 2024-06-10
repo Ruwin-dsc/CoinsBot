@@ -34,7 +34,7 @@ exports.run = async (bot, message, args, config, data) => {
             const seconds = Math.floor(remainingCooldown % 60);
     
             const CouldownEmbed = new Discord.EmbedBuilder()
-            .setDescription(`🕐 Vous avez déjà \`gift\` récemment\n\nRéessayez dans ${hours} heures, ${minutes} minutes\nUtilisez la commande \`wagon\` pour vendre vos minerais\n\n**__Inventaire:__**\n**Charbon:** ${mineData.charbon || 0}\n**Fer:** ${mineData.fer || 0}\n**Or:** ${mineData.or || 0}\n**Diamant:** ${mineData.diamant || 0}`)
+            .setDescription(`🕐 Vous avez déjà \`wagon\` récemment\n\nRéessayez dans ${hours} heures, ${minutes} minutes\nUtilisez la commande \`wagon\` pour vendre vos minerais\n\n**__Inventaire:__**\n**Charbon:** ${mineData.charbon || 0}\n**Fer:** ${mineData.fer || 0}\n**Or:** ${mineData.or || 0}\n**Diamant:** ${mineData.diamant || 0}`)
             .setFooter({
                 text: message.member.user.username,
                 iconURL: message.member.user.displayAvatarURL({ dynamic: true }),
