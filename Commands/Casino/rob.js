@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 
-const cooldownTime = 0.45 * 60 * 60;
 const cooldownsReputation = new Map();
 
 exports.help = {
@@ -11,6 +10,7 @@ exports.help = {
   category: 'Casino'
 }
 exports.run = async (bot, message, args, config, data) => {
+    const cooldownTime = JSON.parse(data.time).rob;
     if (cooldownsReputation.has(message.author.id)) {
         const cooldownExpiration = cooldownsReputation.get(message.author.id) + cooldownTime;
         const remainingCooldown = cooldownExpiration - Math.floor(Date.now() / 1000);
@@ -21,7 +21,7 @@ exports.run = async (bot, message, args, config, data) => {
             const seconds = Math.floor(remainingCooldown % 60);
 
             const CouldownEmbed = new Discord.EmbedBuilder()
-            .setDescription(`🕐 Vous avez déjà \`rob\` quelqu'un\n\nRéessayez dans ${minutes} minutes`)
+            .setDescription(`🕐 Vous avez déjà \`rob\` quelqu'un\n\nRéessayez dans${hours > 0 ? ` ${hours} heures` : ""}${minutes > 0 ? ` ${minutes} minutes`: ""}${seconds > 0 ? ` ${seconds} secondes` : ""}`)
             .setFooter({ text: message.author.username, iconURL: message.author.displayAvatarURL({ dynamic: true })})
             .setColor(data.color)
 
@@ -32,11 +32,11 @@ exports.run = async (bot, message, args, config, data) => {
     if (!user) return message.reply({ content: ":x: `ERROR:` Pas de membre trouvé !", allowedMentions: { repliedUser: false } })
     let targetuser = bot.functions.checkUser(bot, message, args, user.id)
     
-    if (1 == 2) {
+    if (targetuser.antirob > Date.now()) {
         
         let timeEmbed = new Discord.EmbedBuilder()
             .setColor(data.color)
-            .setDescription(`:shield: Vous ne pouvez pas rob cet utilisateur\n\n Son anti-rob prendra fin dans ${cool[1]} `)
+            .setDescription(`:shield: Vous ne pouvez pas rob cet utilisateur\n\n Son anti-rob prendra fin dans <t:${Math.floor(targetuser.antirob / 1000)}:R> `)
             .setFooter({ text: `${message.member.user.username}`, iconURL: message.member.user.displayAvatarURL({ dynamic: true }) })
         return message.reply({ embeds: [timeEmbed], allowedMentions: { repliedUser: false } })
     } else {
@@ -73,6 +73,8 @@ exports.run = async (bot, message, args, config, data) => {
         bot.functions.checkLogs(bot, message, args, message.guild.id, `${user.user.username} vient de se faire voler \`\`${random} coins\`\` par ${message.author.username}`, 'rob', 'Red')
         await bot.functions.addCoins(bot, message, args, message.author.id, random, 'coins')
         await bot.functions.removeCoins(bot, message, args, user.user.id, random, 'coins')
+        await bot.functions.addCoins(bot, message, args, message.author.id, { timestamp: Math.floor(Date.now() / 1000), message: `:green_circle: Vous avez volé ${user.user.username} un total de \`${random} coins\``}, 'mail')
+        await bot.functions.addCoins(bot, message, args, user.user.id, { timestamp: Math.floor(Date.now() / 1000), message: `:red_circle: ${message.author.username} vous a volé \`${random} coins\``}, 'mail')
     };
 }
 

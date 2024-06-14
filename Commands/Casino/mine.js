@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 
-const cooldownTime = 12 * 60 * 60;
 const cooldownsdaily = new Map();
 
 exports.help = {
@@ -11,6 +10,7 @@ exports.help = {
   category: 'Casino'
 }
 exports.run = async (bot, message, args, config, data) => {
+  const cooldownTime = JSON.parse(data.time).mine;
     let user = bot.functions.checkUser(bot, message, args, message.author.id)
     const mineData = JSON.parse(user.minerais)
     if (mineData.wagon == 0) {
@@ -34,7 +34,7 @@ exports.run = async (bot, message, args, config, data) => {
             const seconds = Math.floor(remainingCooldown % 60);
     
             const CouldownEmbed = new Discord.EmbedBuilder()
-            .setDescription(`🕐 Vous avez déjà \`wagon\` récemment\n\nRéessayez dans ${hours} heures, ${minutes} minutes\nUtilisez la commande \`wagon\` pour vendre vos minerais\n\n**__Inventaire:__**\n**Charbon:** ${mineData.charbon || 0}\n**Fer:** ${mineData.fer || 0}\n**Or:** ${mineData.or || 0}\n**Diamant:** ${mineData.diamant || 0}`)
+            .setDescription(`🕐 Vous avez déjà \`wagon\` récemment\n\nRéessayez dans${hours > 0 ? ` ${hours} heures` : ""}${minutes > 0 ? ` ${minutes} minutes`: ""}${seconds > 0 ? ` ${seconds} secondes` : ""}\nUtilisez la commande \`wagon\` pour vendre vos minerais\n\n**__Inventaire:__**\n**Charbon:** ${mineData.charbon || 0}\n**Fer:** ${mineData.fer || 0}\n**Or:** ${mineData.or || 0}\n**Diamant:** ${mineData.diamant || 0}`)
             .setFooter({
                 text: message.member.user.username,
                 iconURL: message.member.user.displayAvatarURL({ dynamic: true }),

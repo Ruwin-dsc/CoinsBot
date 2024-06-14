@@ -1,10 +1,15 @@
     module.exports = {
       name: 'ready',
       async execute(bot) {
+        let req = bot.db.prepare('SELECT * FROM bot WHERE id = ?').get(bot.user.id)
+        if(!req) {
+          bot.db.exec(`INSERT INTO bot (id) VALUES ('${bot.user.id}')`);
+        req = bot.db.prepare('SELECT * FROM bot WHERE id = ?').get(bot.user.id)
+        }
         try {
         let index = 0;
         const statuses = [
-            { name: '/whitehall', type: 5, presence: 'dnd' },
+            { name: JSON.parse(req.activity).name, type: JSON.parse(req.activity).type, presence: 'online' },
         ];
         setInterval(async () => {
             await bot.user.setPresence({ activities: [{ name: statuses[index].name, type: statuses[index].type }], status: statuses[index].presence });

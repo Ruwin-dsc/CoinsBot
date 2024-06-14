@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 
-const cooldownTime = 7 * 60 * 60;
 const cooldownsReputation = new Map();
 
 exports.help = {
@@ -11,6 +10,7 @@ exports.help = {
   category: 'Metier'
 }
 exports.run = async (bot, message, args, config, data) => {
+    const cooldownTime = JSON.parse(data.time).arrest;
     if (cooldownsReputation.has(message.author.id)) {
         const cooldownExpiration = cooldownsReputation.get(message.author.id) + cooldownTime;
         const remainingCooldown = cooldownExpiration - Math.floor(Date.now() / 1000);
@@ -21,7 +21,7 @@ exports.run = async (bot, message, args, config, data) => {
             const seconds = Math.floor(remainingCooldown % 60);
 
             const CouldownEmbed = new Discord.EmbedBuilder()
-            .setDescription(`🕐 Vous avez déjà \`arrest\` récemment\n\nRéessayez dans ${hours} heures et ${minutes} minutes`)
+            .setDescription(`🕐 Vous avez déjà \`arrest\` récemment\n\nRéessayez dans${hours > 0 ? ` ${hours} heures` : ""}${minutes > 0 ? ` ${minutes} minutes`: ""}${seconds > 0 ? ` ${seconds} secondes` : ""}`)
             .setFooter({ text: message.author.username, iconURL: message.author.displayAvatarURL({ dynamic: true })})
             .setColor(data.color)
 

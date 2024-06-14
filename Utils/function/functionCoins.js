@@ -41,6 +41,12 @@ function addcoins(bot, message, args, userId, coins, type) {
             'rep': JSON.parse(req.coins).rep + parseInt(coins)
         }
         bot.db.prepare(`UPDATE user SET coins = @coins WHERE id = @id`).run({ coins: JSON.stringify(json), id: userId});
+    } else if(type == 'drugs') {
+        bot.db.prepare(`UPDATE user SET drugs = @coins WHERE id = @id`).run({ coins: req.drugs + coins, id: userId});
+    } else if(type == 'mail') {
+        const array = JSON.parse(req.mails)
+        array.push(coins)
+        bot.db.prepare(`UPDATE user SET mails = @coins WHERE id = @id`).run({ coins: JSON.stringify(array), id: userId});
     }
 }
 
@@ -71,7 +77,7 @@ function removecoins(bot, message, args, userId, coins, type) {
 }
 
 function checklogs(bot, message, args, guildId, coins, type, color) {
-    const req = checkguild(bot, message, args, guildId)
+    const req = checkguild(bot, message, guildId)
     if(type == "dailyCoins") {
         const channel = message.guild.channels.cache.get(JSON.parse(req.logs).transaction)
         if(channel) {
@@ -160,6 +166,17 @@ function checklogs(bot, message, args, guildId, coins, type, color) {
             .setTitle('Slots')
             channel.send({ embeds: [embed]})
         }
+    } else if(type == "wagon") {
+        const channel = message.guild.channels.cache.get(JSON.parse(req.logs).transaction)
+        if(channel) {
+            const embed = new Discord.EmbedBuilder()
+            .setColor('Green')
+            .setDescription(coins)
+            .setAuthor({ name: `${message.member.user.username}`, iconURL: message.member.user.displayAvatarURL({ dynamic: true }) })
+            .setTimestamp()
+            .setTitle('Wagon')
+            channel.send({ embeds: [embed]})
+        }
     }
 
 }
@@ -207,12 +224,43 @@ function checkentreprise(bot, message, args, entrepriseName) {
 
 function addteam(bot, message, args, teamName, number, type) {
     let req = checkteam(bot, message, args, teamName)
-    if(type == "rep") {
+    if(type == "rep" || type == "coins") {
         const json = {
-            'rep': parseInt(JSON.parse(req.coins).rep) + number
+            'coins': type == "coins" ? parseInt(JSON.parse(req.coins).coins) + number : parseInt(JSON.parse(req.coins).coins),
+            'rep': type == "rep" ? parseInt(JSON.parse(req.coins).rep) + number : parseInt(JSON.parse(req.coins).rep)
         }
-        bot.db.prepare(`UPDATE team SET rep = @coins WHERE id = @id`).run({ coins: JSON.stringify(json), id: teamName.toLowerCase()});
+        bot.db.prepare(`UPDATE team SET coins = @coins WHERE id = @id`).run({ coins: JSON.stringify(json), id: teamName.toLowerCase()});
+    } else if(type == "member") {
+        const array = JSON.parse(req.members).filter(u => u.user !== number.user)
+        array.push(number)
+        bot.db.prepare(`UPDATE team SET members = @coins WHERE id = @id`).run({ coins: JSON.stringify(array), id: teamName.toLowerCase()});
+    } else if(type == "cadenas") {
+        bot.db.prepare(`UPDATE team SET cadenas = @coins WHERE id = @id`).run({ coins: req.cadenas + number, id: teamName.toLowerCase()});
     }
+}
+
+function removeteam(bot, message, args, teamName, number, type) {
+    let req = checkteam(bot, message, args, teamName)
+    if(type == "rep" || type == "coins") {
+        const json = {
+            'coins': type == "coins" ? parseInt(JSON.parse(req.coins).coins) - number : parseInt(JSON.parse(req.coins).coins),
+            'rep': type == "rep" ? parseInt(JSON.parse(req.coins).rep) - number : parseInt(JSON.parse(req.coins).rep)
+        }
+        bot.db.prepare(`UPDATE team SET coins = @coins WHERE id = @id`).run({ coins: JSON.stringify(json), id: teamName.toLowerCase()});
+    } else if(type == "member") {
+        const array = JSON.parse(req.members)
+        array.filter(u => u.user !== number)
+        bot.db.prepare(`UPDATE team SET members = @coins WHERE id = @id`).run({ coins: JSON.stringify(array), id: teamName.toLowerCase()});
+    } else if(type == "cadenas") {
+        bot.db.prepare(`UPDATE team SET cadenas = @coins WHERE id = @id`).run({ coins: req.cadenas - number, id: teamName.toLowerCase()});
+    }
+}
+
+function checkuserteam(bot, message, args, userId) {
+    const team = checkuser(bot, message, args, userId).team
+    const req = checkteam(bot, message, args, team || 'aucun')
+    if(!req) return false
+    else return req
 }
 module.exports = {
     checkUser: checkuser,
@@ -224,5 +272,7 @@ module.exports = {
     removeMinerais: removeminerais,
     checkTeam: checkteam,
     addTeam: addteam,
-    checkEntreprise: checkentreprise
+    checkEntreprise: checkentreprise,
+    checkUserTeam: checkuserteam,
+    removeTeam: removeteam
 }

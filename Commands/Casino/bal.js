@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-
+const numeral = require('numeral');
 exports.help = {
   name: 'bal',
   aliases: ['coins' , 'balance' , 'money' , 'bank' , 'coin'],
@@ -16,9 +16,9 @@ exports.run = async (bot, message, args, config, data) => {
   const embed = new Discord.EmbedBuilder()
   .setAuthor({name: member.user.username, iconURL: member.user.displayAvatarURL({ dynamic: true })})
   .setDescription(`> **${member.user.username}** a
-  :coin: **${JSON.parse(req.coins).coins}** coins en poche
-  :bank: **${JSON.parse(req.coins).bank}** coins en banque
-  :small_red_triangle: **${JSON.parse(req.coins).rep}** point${req.rep > 1 ? "s" : ""} de réputation\n`)
+  :coin: **${JSON.parse(req.coins).coins > 100000 ? numeral(JSON.parse(req.coins).coins).format('0a') : JSON.parse(req.coins).coins}** coins en poche
+  :bank: **${JSON.parse(req.coins).bank > 100000 ? numeral(JSON.parse(req.coins).bank).format('0a') : JSON.parse(req.coins).bank}** coins en banque
+  :small_red_triangle: **${JSON.parse(req.coins).rep > 100000 ? numeral(JSON.parse(req.coins).rep).format('0a') : JSON.parse(req.coins).rep}** point${req.rep > 1 ? "s" : ""} de réputation\n`)
   .setColor(data.color)
   .setFooter({ text: config.footerText });
 

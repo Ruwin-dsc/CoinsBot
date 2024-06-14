@@ -71,7 +71,7 @@ exports.run = async (bot, message, args, config, data) => {
             collector.on("collect", async (interaction) => {
                 if (interaction.user.id !== message.author.id) return interaction.reply({ content: "Vous n'avez pas la permission !", ephemeral: true }).catch(() => { })
                 await interaction.deferUpdate();
-                data.guild = await checkGuild(client.user.id, message.guild.id)
+                data = bot.functions.checkGuild(bot, message, message.guild.id)
                 shop = JSON.parse(data.cshop)
                 if (interaction.customId === "left") {
                     if (page == parseInt(Object.keys(embeds).shift())) page = parseInt(Object.keys(embeds).pop())
@@ -104,31 +104,29 @@ exports.run = async (bot, message, args, config, data) => {
             })
             collectorr.on("collect", async (select) => {
                 if (select.user.id !== message.author.id) return select.reply({ content: "Vous n'avez pas la permission !", ephemeral: true }).catch(() => { })
-                cb()
                 const value = select.values[0]
-                await select.deferUpdate()
-                let item = shop[value]
+
+                let item = shop.filter(j => j.id == value)
                 roww.components[0].setDisabled(true);
-                let bal = (await getUser(message.member.id, message.guild.id)).Coins
-                if (!item) { message.reply({ content: ":x: Cet item n'existe pas !", allowedMentions: { repliedUser: false } }); return }
+                let bal = JSON.parse(bot.functions.checkUser(bot, message, args, message.author.id).coins).coins
+                if (item.length == 0) { message.reply({ content: ":x: Cet item n'existe pas !", allowedMentions: { repliedUser: false } }); return }
 
                 const moneymore = new Discord.EmbedBuilder()
                     .setColor(data.color)
                     .setDescription(`:x: Vous n'avez pas assez de coins`)
                     .setFooter({ text: `${message.member.user.username}`, iconURL: message.member.user.displayAvatarURL({ dynamic: true }) })
-                if (item.cost > bal) { return select.followUp({ embeds: [moneymore] }).catch(e => { }); }
+                if (item[0].cost > bal) { return message.reply({ embeds: [moneymore] }).catch(e => { console.log(e)}); }
 
-                let role = message.guild.roles.cache.get(item.id)
+                let role = message.guild.roles.cache.get(item[0].id)
                 if (!role) {
-                    delete difarr[item.id]
-                    await data.guild.update({ cshop: shop }, { where: { guildId: message.guild.id } });
+                    shop = shop.filter(j => j.id !== value)
+                    bot.db.prepare(`UPDATE guild SET cshop = @coins WHERE id = @id`).run({ coins: JSON.stringify(shop), id: message.guild.id});
                     return message.channel.send(`:x: Je n'ai pas trouvé ce rôle: item supprimé du shop`);
                 }
                 if (message.member.roles.cache.has(role.id)) return message.channel.send(":x: Vous avez déjà ce rôle !")
-                await removeCoins(message.member.id, message.guild.id, item.cost, "coins");
+                    bot.functions.removeCoins(bot, message, args, message.author.id, item[0].cost, 'coins')
                 message.member.roles.add(role.id).catch(e => { return message.channel.send(`:x: Je n'ai pas pu ajouter ce rôle !\nContactez un administrateur du serveur et vérifiez mes permissions !`) })
-                select.followUp(`Vous venez d'acheter un \`${item.name}\` pour \`${item.cost} coins\` et avez reçu le rôle **${role.name}** !`)
-                //db.push(`${message.guild.id}_${message.author.id}_mail`, `<t:${Date.parse(new Date(Date.now())) / 1000}:d>) :red_circle: Vous avez acheté un \`${item.name}\` pour \`\`${item.cost} coins\`\``)
+                message.reply(`Vous venez d'acheter un \`${item[0].name}\` pour \`${item[0].cost} coins\` et avez reçu le rôle **${role.name}** !`)
                 roww.components[0].setDisabled(false);
             })
             collector.on("end", async () => {

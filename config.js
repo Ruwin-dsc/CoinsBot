@@ -9,7 +9,7 @@ module.exports = {
     {
       "name": "Bleu",
       "price": 3,
-      "hexCode": "#0000FF"
+      "hexCode": "#0017FC"
     },
     {
       "name": "Rouge",
@@ -19,12 +19,12 @@ module.exports = {
     {
       "name": "Jaune",
       "price": 3,
-      "hexCode": "#FFFF00"
+      "hexCode": "#FBFF00"
     },
     {
       "name": "Vert",
       "price": 3,
-      "hexCode": "#008000"
+      "hexCode": "#1BFF00"
     },
     {
       "name": "Invisible",
@@ -34,7 +34,7 @@ module.exports = {
     {
       "name": "Blanc",
       "price": 3,
-      "hexCode": "#FFFFFF"
+      "hexCode": "#FDFEFE"
     },
     {
       "name": "Noir",

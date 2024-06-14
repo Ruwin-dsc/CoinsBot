@@ -11,6 +11,7 @@ exports.help = {
   category: 'Casino'
 }
 exports.run = async (bot, message, args, config, data) => {
+    const cooldownTime = JSON.parse(data.time).daily;
     if (cooldownsdaily.has(message.author.id)) {
         const cooldownExpiration = cooldownsdaily.get(message.author.id) + cooldownTime;
         const remainingCooldown = cooldownExpiration - Math.floor(Date.now() / 1000);
@@ -21,7 +22,7 @@ exports.run = async (bot, message, args, config, data) => {
             const seconds = Math.floor(remainingCooldown % 60);
 
             const CouldownEmbed = new Discord.EmbedBuilder()
-            .setDescription(`🕐 Vous avez déjà \`daily\` récemment\n\nRéessayez dans ${hours} heures, ${minutes} minutes`)
+            .setDescription(`🕐 Vous avez déjà \`daily\` récemment\n\nRéessayez dans${hours > 0 ? ` ${hours} heures` : ""}${minutes > 0 ? ` ${minutes} minutes`: ""}${seconds > 0 ? ` ${seconds} secondes` : ""}`)
             .setFooter({ text: config.footerText})
             .setColor(data.color)
 
@@ -59,7 +60,7 @@ const text = {
     3: "🌱 Comme une plante qui grandit chaque jour, vous gagnez `{coinsText} coins` pour votre croissance personnelle continue !",
     4: "🏆 Votre routine quotidienne exceptionnelle vous vaut `{coinsText} coins`. Continuez sur cette lancée !",
     5: "🔥 Chaque jour est une nouvelle opportunité. Recevez `{coinsText} coins` pour votre persévérance et votre détermination !",
-    6: "⚡ Votre énergie quotidienne est contagieuse ! Vous gagnez `{coinsText} coins` pour votre dynamisme et votre passion !",
+    6: "⚡ Votre énergie quotidienne est conusernameieuse ! Vous gagnez `{coinsText} coins` pour votre dynamisme et votre passion !",
     7: "🌟 Vous brillez chaque jour un peu plus. Recevez `{coinsText} coins` pour votre éclat constant !",
     8: "🌸 Chaque jour apporte de nouvelles fleurs. Vous gagnez `{coinsText} coins` pour votre beauté intérieure et votre croissance !",
     9: "🚀 Chaque jour vous propulse plus loin. Gagnez `{coinsText} coins` pour votre ambition et vos progrès quotidiens !",

@@ -62,13 +62,12 @@ exports.run = async (bot, message, args, config, data) => {
           }
         ],
         footer: {
-          text: `${user.tag}, si vous abandonnez la partie, seulement 50% de vos coins vous seront remboursés !`
+          text: `${user.username}, si vous abandonnez la partie, seulement 50% de vos coins vous seront remboursés !`
         }
     };
 
     const game = await blackjack(message, { normalEmbed: false, normalEmbedContent: embed, resultEmbed: false });
     rslow.roulette[message.author.id] = true
-    console.log(game)
     switch (game.result) {
       default: 
       delete rslow.roulette[message.author.id];

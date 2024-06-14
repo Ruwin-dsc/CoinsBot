@@ -77,7 +77,7 @@ exports.run = async (bot, message, args, config, data) => {
         if(i.user.id == message.author.id) {
             return true;
         } else {
-            return i.reply(`Vous n'avez pas les permissions`);
+            return i.reply({ content: `Vous n'avez pas les permissions`, ephemeral: true })
         }
     }
     const collector = msg.createMessageComponentCollector({ filter, time: 120000 });

@@ -50,7 +50,7 @@ exports.run = async (bot, message, args, config, data) => {
         const array = JSON.parse(req.user)
         if(!array.includes(i.user.id)) array.push(i.user.id)
         let req2 = bot.db.prepare('SELECT * FROM entreprise WHERE author = ?').get(i.user.id) || bot.db.prepare(`SELECT * FROM entreprise WHERE user LIKE '%${i.user.id}%'`)
-        bot.db.exec("DELETE FROM entreprise WHERE author = '" + i.user.id + "'");
+        bot.db.exec(`DELETE FROM entreprise WHERE author = '${i.user.id}'`);
         if(req2.author == i.user.id) bot.db.prepare('DELETE FROM entreprise WHERE author = @author').run({ author: i.user.id})
         else if(req2.author) {
             const array2 = JSON.parse(req2.user).filter(u => u !== i.user.id)

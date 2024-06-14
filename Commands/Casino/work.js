@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 
-const cooldownTime = 1 * 60 * 60;
 const cooldownsReputation = new Map();
 
 exports.help = {
@@ -11,7 +10,8 @@ exports.help = {
   category: 'Casino'
 }
 exports.run = async (bot, message, args, config, data) => {
-    let salaire = "", coinsSalaire = 0
+    const cooldownTime = JSON.parse(data.time).work;
+    let salaire, coinsSalaire = 0
     if (cooldownsReputation.has(message.author.id)) {
         const cooldownExpiration = cooldownsReputation.get(message.author.id) + cooldownTime;
         const remainingCooldown = cooldownExpiration - Math.floor(Date.now() / 1000);
@@ -22,7 +22,7 @@ exports.run = async (bot, message, args, config, data) => {
             const seconds = Math.floor(remainingCooldown % 60);
 
             const CouldownEmbed = new Discord.EmbedBuilder()
-            .setDescription(`🕐 Vous avez déjà \`work\` récemment\n\nRéessayez dans ${minutes} minutes`)
+            .setDescription(`🕐 Vous avez déjà \`work\` récemment\n\nRéessayez dans${hours > 0 ? ` ${hours} heures` : ""}${minutes > 0 ? ` ${minutes} minutes`: ""}${seconds > 0 ? ` ${seconds} secondes` : ""}`)
             .setFooter({ text: message.author.username, iconURL: message.author.displayAvatarURL({ dynamic: true })})
             .setColor(data.color)
 
@@ -42,7 +42,7 @@ exports.run = async (bot, message, args, config, data) => {
     let embed5 = new Discord.EmbedBuilder()
       .setColor(data.color)
       .setTitle(`Work`)
-      .setDescription(`**${text[Math.floor(Math.random() * 15) + 1].replace('{coinsText}', randomnumber)}\n\n${salaire}**`)
+      .setDescription(`**${text[Math.floor(Math.random() * 15) + 1].replace('{coinsText}', randomnumber)}${salaire ? `\n\n${salaire}` : "" }**`)
       .setFooter({ text: `${message.member.user.username}`, iconURL: message.member.user.displayAvatarURL({ dynamic: true }) })
 
     message.reply({ embeds: [embed5], allowedMentions: { repliedUser: false } })

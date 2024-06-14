@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 var items = require("../../Utils/function/shop.json");
-
+const ms = require('ms')
 exports.help = {
   name: 'buy',
   aliases: ['bought'],
@@ -89,7 +89,7 @@ exports.run = async (bot, message, args, config, data) => {
                         
                         return message.reply({ embeds: [Embed2], allowedMentions: { repliedUser: false } })
                     }
-                    bot.db.prepare(`UPDATE user SET antirob = @coins WHERE id = @id`).run({ coins: Date.now() + antirobduration, id: message.author.id});
+                    bot.db.prepare(`UPDATE user SET antirob = @coins WHERE id = @id`).run({ coins: Math.floor(parseInt(Date.now()) + ms(antirobduration)), id: message.author.id});
                     bot.functions.removeCoins(bot, message, args, message.author.id, rprice, 'coins')
 
                     let timetime = msToTime(antirobduration);

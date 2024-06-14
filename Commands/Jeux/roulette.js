@@ -161,7 +161,7 @@ exports.run = async (bot, message, args, config, data) => {
         } else {
           message.reply({
             embeds: [new Discord.EmbedBuilder()
-              .setColor("RED")
+              .setColor("Red")
               .setTitle("Résultat: " + roulettenumber)
               .setDescription(`:name_badge: Vous avez misez sur le mauvais numéro !\nVous venez de perdre \`${money} coins\``)], allowedMentions: { repliedUser: false }
           })
