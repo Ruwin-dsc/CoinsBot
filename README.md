@@ -1,5 +1,5 @@
 <h1 align="center">
- 🦫 〢 CoinsBot
+ � 〢 CoinsBot
 </h1>
 
 ---
