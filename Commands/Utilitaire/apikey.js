@@ -31,6 +31,7 @@ exports.run = async (bot, message, args, config, data) => {
                 if (i.customId === 'yes') {
                     collector.stop()
                     let token = await gentoken()
+                    bot.db.prepare(`UPDATE bot SET apikey = @coins WHERE id = @id`).run({ coins: token, id: message.author.id});
                     return i.followUp({ content: `:key: La clef du serveur a été régénéré, la voici: ||\`${token}\`||`, ephemeral: true })
                 } else {
                     collector.stop()

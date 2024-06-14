@@ -81,7 +81,8 @@ module.exports = () => {
 
     db.exec(`CREATE TABLE IF NOT EXISTS bot (
         id TEXT DEFAULT NULL,
-        activity TEXT DEFAULT '{ "name": "by ruwinou CoinsBot PERSO", "type": "1" }'
+        activity TEXT DEFAULT '{ "name": "by ruwinou CoinsBot PERSO", "type": "1" }',
+        apikey TEXT DEFAULT NULL
     )`);
     return db;
 }
