@@ -80,6 +80,7 @@ exports.run = async (bot, message, args, config, data) => {
             .setDescription(`Une erreur est apparue ! Vos coins ont été remboursés !`)
         ]
       });
+      
       case 'WIN':
         const wingain = parseInt(money * 2);
         bot.functions.addCoins(bot, message, args, message.author.id, wingain, 'coins')
@@ -91,6 +92,7 @@ exports.run = async (bot, message, args, config, data) => {
               .setDescription(`Vous avez un total de ${v(game.ycard)} et moi ${v(game.dcard)} points !\n:coin: Vous venez de gagner \`${wingain} coins\``)
           ]
         });
+        bot.functions.checkLogs(bot, message, args, message.guild.id, `${message.author.username} vient de gagner \`${money}\` coins`, 'bj', 'Green', 'Blackjack')
         delete rslow.roulette[message.author.id];
         break;
       case 'TIE':
@@ -114,6 +116,7 @@ exports.run = async (bot, message, args, config, data) => {
               .setDescription(`Vous avez un total de ${v(game.ycard)} et moi ${v(game.dcard)} points !\n:coin: Vous venez de perdre \`${money} coins\``)
           ]
         });
+        bot.functions.checkLogs(bot, message, args, message.guild.id, `${message.author.username} vient de perdre \`${money}\` coins`, 'bj', 'Red', 'Blackjack')
         delete rslow.roulette[message.author.id];
         break;
       case 'DOUBLE WIN':
@@ -128,6 +131,7 @@ exports.run = async (bot, message, args, config, data) => {
               .setDescription(`Vous avez un total de ${v(game.ycard)} et moi ${v(game.dcard)} points !\n:coin: Vous venez de gagner \`${dwingain} coins\``)
           ]
         });
+        bot.functions.checkLogs(bot, message, args, message.guild.id, `${message.author.username} vient de gagner \`${money}\` coins`, 'bj', 'Green', 'Blackjack')
         delete rslow.roulette[message.author.id];
         break;
       case 'DOUBLE LOOSE':
@@ -141,6 +145,7 @@ exports.run = async (bot, message, args, config, data) => {
               .setDescription(`Vous avez un total de ${v(game.ycard)} et moi ${v(game.dcard)} points  !\n:coin: Vous venez de perdre \`${dlosegain} coins\``)
           ]
         });
+        bot.functions.checkLogs(bot, message, args, message.guild.id, `${message.author.username} vient de perdre \`${money}\` coins`, 'bj', 'Red', 'Blackjack')
         break;
       case 'ERROR':
         delete rslow.roulette[message.author.id];

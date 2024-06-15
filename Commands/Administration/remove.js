@@ -73,6 +73,7 @@ exports.run = async (bot, message, args, config, data) => {
             bot.functions.removeCoins(bot, message, args, member.id, amount, 'coins')
 
             message.channel.send(`:coin: Vous venez de de retirer à ${member.user.username} un montant de \`${amount} coins\``)
+            bot.functions.checkLogs(bot, message, args, message.guild.id, `:warning: ${message.author.username} vient de retiré \`10 coins\` à ${member.user.username}`, 'add', 'Orange', 'Remove')
             await bot.functions.addCoins(bot, message, args, member.user.id, { timestamp: Math.floor(Date.now() / 1000), message: `:red_circle: ${message.author.username} vous a retiré \`${amount} coins\``}, 'mail')
         }
 

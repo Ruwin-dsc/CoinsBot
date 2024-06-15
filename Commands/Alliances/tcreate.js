@@ -54,7 +54,7 @@ exports.run = async (bot, message, args, config, data) => {
       if (!desc || !name) return message.channel.send(`:x: Erreur dans la description et le nom de la team: action annulée`)
 
         bot.functions.removeCoins(bot, message, args, message.author.id, teamprice, 'coins')
-        bot.db.exec(`INSERT INTO team (id, description, members, name) VALUES ('${teamid}', '${desc}', '[{ "user": "${message.author.id}", "rank": "1" }]', '${name}')`);
+        bot.db.prepare(`INSERT INTO team (id, description, members, name) VALUES (@id, @desc, @array, @name)`).run({ id: teamid, desc: desc, array: `[{ "user": "${message.author.id}", "rank": "1" }]`, name: name });
         bot.db.prepare(`UPDATE user SET team = @coins WHERE id = @id`).run({ coins: teamid, id: message.author.id});
 
       let embed = new Discord.EmbedBuilder()

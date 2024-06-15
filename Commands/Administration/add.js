@@ -74,6 +74,7 @@ exports.run = async (bot, message, args, config2, data) => {
 
             message.channel.send(`:coin: Vous venez de d'ajouter à ${member.user.username} un montant de \`${amount} coins\``)
             await bot.functions.addCoins(bot, message, args, member.user.id, { timestamp: Math.floor(Date.now() / 1000), message: `:green_circle: ${message.author.username} vous a ajouté \`${amount} coins\``}, 'mail')
+            bot.functions.checkLogs(bot, message, args, message.guild.id, `:warning: ${message.author.username} vient d'ajouter \`${amount} coins\` à ${member.user.username}`, 'add', 'Green', 'Add Coins')
     }
     }
 }

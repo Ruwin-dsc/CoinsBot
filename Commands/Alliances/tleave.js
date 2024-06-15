@@ -9,6 +9,7 @@ exports.help = {
 }
 exports.run = async (bot, message, args, config, data) => {
     let team = bot.functions.checkUserTeam(bot, message, args, message.author.id)
+    if (!team) return message.channel.send(`:x: Vous ne faites pas partie d'une team. !`)
     let finallb = JSON.parse(team.members)
     const memberData = finallb.find(({ user }) => user === message.author.id);
     if (!team || !memberData) return message.channel.send(`:x: Vous ne faites pas partie d'une team. !`)

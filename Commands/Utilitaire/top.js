@@ -116,56 +116,66 @@ async function LB(message, medit, type) {
 }
 
 function LBtotal(bot, guild) {
-    let desc = ""
+    let desc = "", count = 0
     const req = bot.db.prepare('SELECT * FROM user').all()
     req.sort((a, b) => (JSON.parse(b.coins).coins + JSON.parse(b.coins).bank) - (JSON.parse(a.coins).coins + JSON.parse(a.coins).bank));
     req.forEach((user, index) => {
+        if(JSON.parse(user.coins).bank + JSON.parse(user.coins).coins <= 0) return
+        if(count == 9) return
         const user2 = guild.members.cache.get(user.id)
-        if(user2) desc += `${medals[index]}) ${user2.user.username}\n\`${JSON.parse(user.coins).bank + JSON.parse(user.coins).coins} coins\` :bank:\n`
+        if(user2) desc += `${medals[index]}) ${user2.user.username}\n\`${JSON.parse(user.coins).bank + JSON.parse(user.coins).coins} coins\` :bank:\n`, count++
     });
     return desc
 }
 
 function LBmain(bot, guild) {
-    let desc = ""
+    let desc = "", count = 0
     const req = bot.db.prepare('SELECT * FROM user').all()
     req.sort((a, b) => (JSON.parse(b.coins).coins) - (JSON.parse(a.coins).coins));
     req.forEach((user, index) => {
+        if(JSON.parse(user.coins).coins <= 0) return 
+        if(count == 9) return
         const user2 = guild.members.cache.get(user.id)
-        if(user2) desc += `${medals[index]}) ${user2.user.username}\n\`${JSON.parse(user.coins).coins} coins\` :coin:\n`
+        if(user2) desc += `${medals[index]}) ${user2.user.username}\n\`${JSON.parse(user.coins).coins} coins\` :coin:\n`, count++
     });
     return desc
 }
 
 function LBbank(bot, guild) {
-    let desc = ""
+    let desc = "", count = 0
     const req = bot.db.prepare('SELECT * FROM user').all()
     req.sort((a, b) => (JSON.parse(b.coins).bank) - (JSON.parse(a.coins).bank));
     req.forEach((user, index) => {
+        if(JSON.parse(user.coins).bank <= 0) return
+        if(count == 9) return
         const user2 = guild.members.cache.get(user.id)
-        if(user2) desc += `${medals[index]}) ${user2.user.username}\n\`${JSON.parse(user.coins).bank} coins\` :bank:\n`
+        if(user2) desc += `${medals[index]}) ${user2.user.username}\n\`${JSON.parse(user.coins).bank} coins\` :bank:\n`, count++
     });
     return desc
 }
 
 function LBrep(bot, guild) {
-    let desc = ""
+    let desc = "", count = 0
     const req = bot.db.prepare('SELECT * FROM user').all()
     req.sort((a, b) => (JSON.parse(b.coins).rep) - (JSON.parse(a.coins).rep));
     req.forEach((user, index) => {
+        if(JSON.parse(user.coins).rep <= 0) return
+        if(count == 9) return
         const user2 = guild.members.cache.get(user.id)
-        if(user2) desc += `${medals[index]}) ${user2.user.username}\n\`${JSON.parse(user.coins).rep} rep\` :small_red_triangle:\n`
+        if(user2) desc += `${medals[index]}) ${user2.user.username}\n\`${JSON.parse(user.coins).rep} rep\` :small_red_triangle:\n`, count++
     });
     return desc
 }
 
 function LBpalier(bot, guild) {
-    let desc = ""
+    let desc = "", count = 0
     const req = bot.db.prepare('SELECT * FROM user').all()
     req.sort((a, b) => JSON.parse(b.palier).level - JSON.parse(a.palier).level);
     req.forEach((user, index) => {
+        if(JSON.parse(user.palier).level <= 0) return
+        if(count == 9) return
         const user2 = guild.members.cache.get(user.id)
-        if(user2) desc += `${medals[index]}) ${user2.user.username}\n\`palier ${JSON.parse(user.palier).level}\` :small_orange_diamond:\n`
+        if(user2) desc += `${medals[index]}) ${user2.user.username}\n\`palier ${JSON.parse(user.palier).level}\` :small_orange_diamond:\n`, count++
     });
     return desc
 }

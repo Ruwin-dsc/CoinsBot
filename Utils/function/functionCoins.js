@@ -76,7 +76,7 @@ function removecoins(bot, message, args, userId, coins, type) {
     }
 }
 
-function checklogs(bot, message, args, guildId, coins, type, color) {
+function checklogs(bot, message, args, guildId, coins, type, color, title) {
     const req = checkguild(bot, message, guildId)
     if(type == "dailyCoins") {
         const channel = message.guild.channels.cache.get(JSON.parse(req.logs).transaction)
@@ -175,6 +175,17 @@ function checklogs(bot, message, args, guildId, coins, type, color) {
             .setAuthor({ name: `${message.member.user.username}`, iconURL: message.member.user.displayAvatarURL({ dynamic: true }) })
             .setTimestamp()
             .setTitle('Wagon')
+            channel.send({ embeds: [embed]})
+        }
+    } else {
+        const channel = message.guild.channels.cache.get(JSON.parse(req.logs).transaction)
+        if(channel) {
+            const embed = new Discord.EmbedBuilder()
+            .setColor(color)
+            .setDescription(coins)
+            .setAuthor({ name: `${message.member.user.username}`, iconURL: message.member.user.displayAvatarURL({ dynamic: true }) })
+            .setTimestamp()
+            .setTitle(title)
             channel.send({ embeds: [embed]})
         }
     }
