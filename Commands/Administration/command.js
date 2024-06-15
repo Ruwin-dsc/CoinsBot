@@ -25,5 +25,5 @@ exports.run = async (bot, message, args, config, data) => {
       ActualPlayChannels = ActualPlayChannels.filter(c => c !== channel.id)
       bot.db.prepare(`UPDATE guild SET blockedCommand = @coins WHERE id = @id`).run({ coins: JSON.stringify(ActualPlayChannels), id: message.guild.id});
       message.channel.send(`\`✅\` Les commandes dans le salon ${channel} sont réactivées !`)
-    } else { message.channel.send(`:question: Bloque ou débloque les commandes dans un salon !\nUsage: \`${data.guild.Prefix}command <block/allow> <#channel>\``) }
+    } else { message.channel.send(`:question: Bloque ou débloque les commandes dans un salon !\nUsage: \`${data.prefix}command <block/allow> <#channel>\``) }
 }

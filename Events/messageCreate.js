@@ -20,7 +20,7 @@ module.exports = {
             const json = JSON.parse(guild.blockedCommandAdmin)
             if(json[commandFile.help.name] == "on") return message.reply(`Ces commandes ont été désactivé sur le serveur par le propriétaire du bot !`)
           }
-          if(blockedCommand.includes(commandFile.help.name)) return message.reply("`❌` Les commandes sont désactivées dans ce salon !")
+          if(blockedCommand.includes(message.channel.id)) return message.reply("`❌` Les commandes sont désactivées dans ce salon !")
           if(permOrNON(bot, message, guild, commandFile, config) == true) await commandFile.run(bot, message, args, config, guild);
           const req = bot.functions.checkUser(bot, message, args, message.author.id)
         if(!req.quete) return
@@ -46,7 +46,7 @@ module.exports = {
           const json = JSON.parse(guild.blockedCommandAdmin)
           if(json[commandFile.help.name] == "on") return message.reply(`Ces commandes ont été désactivé sur le serveur par le propriétaire du bot !`)
         }
-        if(blockedCommand.includes(commandFile.help.name)) return message.reply("`❌` Les commandes sont désactivées dans ce salon !")
+        if(blockedCommand.includes(message.channel.id)) return message.reply("`❌` Les commandes sont désactivées dans ce salon !")
           if(permOrNON(bot, message, guild, commandFile, config) == true) await commandFile.run(bot, message, args, config, guild);
         const req = bot.functions.checkUser(bot, message, args, message.author.id)
         if(!req.quete) return
