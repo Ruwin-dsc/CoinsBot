@@ -1,8 +1,11 @@
 module.exports = {
   "token": "",
   "prefix": "!",
-  "buyers": ["820361590826205215"],
+  "buyers": [""],
   "footerText": "♥ CoinsBot by ⲈpicBots",
+
+  /*/ API /*/
+  "port": 3000,
 
   /*/ COLOR (MODIF SI NECESSAIRE) /*/
   "color": [

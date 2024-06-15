@@ -90,7 +90,7 @@ exports.run = async (bot, message, args, config, data) => {
               cooldownsdaily.set(message.author.id, Math.floor(Date.now() / 1000));
               return bot.functions.checkLogs(bot, message, args, message.guild.id, `${message.author.username} vient de gagner \`\`${gain} coins\`\``, 'gift', 'Green')
           } else if (gain < 0) {
-              await removeCoins(message.member.id, message.guild.id, -gain, "coins")
+            await bot.functions.removeCoins(bot, message, args, message.author.id, -gain, 'coins')
               let embed = new Discord.EmbedBuilder()
                   .setColor("Red")
                   .setDescription(`:gift: **Vous venez de perdre \`${gain} coins\` !**`)

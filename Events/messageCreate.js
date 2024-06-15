@@ -69,7 +69,7 @@ module.exports = {
 
 function permOrNON(bot, message, guild, commandFile, config) {
   if(commandFile.help.perm == "WHITELIST") {
-    const whitelist = JSON.parse(guild.whitelist)
+    const whitelist = JSON.parse(guild.wl)
     const owners = JSON.parse(guild.owners)
     if(whitelist.includes(message.author.id)) return true
     else if(owners.includes(message.author.id)) return true

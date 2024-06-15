@@ -54,7 +54,7 @@ exports.run = async (bot, message, args, config, data) => {
     allowedMentions: { repliedUser: false }
   }).then(async msg => {
     const collector = message.channel.createMessageComponentCollector({
-      componentType: Discord.ComponentTypeButton,
+      componentType: Discord.ComponentType.Button,
       time: 150000
     })
     collector.on("collect", async (i) => {

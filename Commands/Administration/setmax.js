@@ -24,7 +24,7 @@ exports.run = async (bot, message, args, config, data) => {
       let Embed = new Discord.EmbedBuilder()
         .setTitle(`:coin: Configuration du stockage`)
         .setColor(data.color)
-        .setDescription(`Pour changer le maximum de stockage de l'entrepot :\n\`${data.guild.Prefix}setmax <entrepot> <gain>\``);
+        .setDescription(`Pour changer le maximum de stockage de l'entrepot :\n\`${data.prefix}setmax <entrepot> <gain>\``);
       message.reply({ embeds: [Embed] })
     }
 }
