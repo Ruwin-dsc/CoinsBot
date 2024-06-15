@@ -39,7 +39,7 @@ exports.run = async (bot, message, args, config2, data) => {
     } else {
         if (args[0] === "team") {
             let team = await bot.functions.checkTeam(bot, message, args, args[2])
-            if (!team) return message.channel.send(`:x: Team introuvable !`)
+        if (!team) return message.channel.send(`:x: Team introuvable !`)
 
             if (args[1] === "rep") {
 
@@ -60,21 +60,21 @@ exports.run = async (bot, message, args, config2, data) => {
                 message.channel.send(`:coin: Vous venez de d'ajouter a la team **${team.name}** un montant de \`${amount} coins\``)
 
             }
-        }
+        } else {
 
-        let member = message.mentions.members.first() || message.guild.members.cache.get(args[0])
-        if (!member)
-            return message.reply(":warning: Utilisateur Invalide")
+            let member = message.mentions.members.first() || message.guild.members.cache.get(args[0])
+            if (!member)
+                return message.reply(":warning: Utilisateur Invalide")
 
-        let amount = args[1]
-        if (!amount) return message.channel.send(`:x: Merci de préciser un montant à ajouter`)
-        if (!verifnum(amount)) return message.channel.send(`:x: Ceci n'est pas un chiffre valide !`)
+            let amount = args[1]
+            if (!amount) return message.channel.send(`:x: Merci de préciser un montant à ajouter`)
+            if (!verifnum(amount)) return message.channel.send(`:x: Ceci n'est pas un chiffre valide !`)
 
-        bot.functions.addCoins(bot, message, args, member.id, amount, 'coins')
+            bot.functions.addCoins(bot, message, args, member.id, amount, 'coins')
 
-        message.channel.send(`:coin: Vous venez de d'ajouter à ${member.user.username} un montant de \`${amount} coins\``)
-        await bot.functions.addCoins(bot, message, args, member.user.id, { timestamp: Math.floor(Date.now() / 1000), message: `:green_circle: ${message.author.username} vous a ajouté \`${amount} coins\``}, 'mail')
-
+            message.channel.send(`:coin: Vous venez de d'ajouter à ${member.user.username} un montant de \`${amount} coins\``)
+            await bot.functions.addCoins(bot, message, args, member.user.id, { timestamp: Math.floor(Date.now() / 1000), message: `:green_circle: ${message.author.username} vous a ajouté \`${amount} coins\``}, 'mail')
+    }
     }
 }
 

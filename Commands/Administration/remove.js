@@ -60,20 +60,21 @@ exports.run = async (bot, message, args, config, data) => {
                 message.channel.send(`:coin: Vous venez de de retirer a la team **${team.name}** un montant de \`${amount} coins\``)
 
             }
+        } else {
+
+            let member = message.mentions.members.first() || message.guild.members.cache.get(args[0])
+            if (!member)
+                return message.reply(":warning: Utilisateur Invalide")
+
+            let amount = args[1]
+            if (!amount) return message.channel.send(`:x: Merci de préciser un montant à retirer`)
+            if (!verifnum(amount)) return message.channel.send(`:x: Ceci n'est pas un chiffre valide !`)
+
+            bot.functions.removeCoins(bot, message, args, member.id, amount, 'coins')
+
+            message.channel.send(`:coin: Vous venez de de retirer à ${member.user.username} un montant de \`${amount} coins\``)
+            await bot.functions.addCoins(bot, message, args, member.user.id, { timestamp: Math.floor(Date.now() / 1000), message: `:red_circle: ${message.author.username} vous a retiré \`${amount} coins\``}, 'mail')
         }
-
-        let member = message.mentions.members.first() || message.guild.members.cache.get(args[0])
-        if (!member)
-            return message.reply(":warning: Utilisateur Invalide")
-
-        let amount = args[1]
-        if (!amount) return message.channel.send(`:x: Merci de préciser un montant à retirer`)
-        if (!verifnum(amount)) return message.channel.send(`:x: Ceci n'est pas un chiffre valide !`)
-
-        bot.functions.removeCoins(bot, message, args, member.id, amount, 'coins')
-
-        message.channel.send(`:coin: Vous venez de de retirer à ${member.user.username} un montant de \`${amount} coins\``)
-        await bot.functions.addCoins(bot, message, args, member.user.id, { timestamp: Math.floor(Date.now() / 1000), message: `:red_circle: ${message.author.username} vous a retiré \`${amount} coins\``}, 'mail')
 
     }
 }

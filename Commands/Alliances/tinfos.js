@@ -14,7 +14,7 @@ exports.run = async (bot, message, args, config, data) => {
       let member = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
       if (!member) return message.reply({ content: ":x: `ERROR:`: Pas de membre trouvé !", allowedMentions: { repliedUser: false } })
       authorteam = bot.functions.checkUserTeam(bot, message, args, member.id)
-    } else authorteam = bot.functions.checkUserTeam(bot, message, args, args[0])
+    } else authorteam = bot.functions.checkTeam(bot, message, args, args[0])
 
     if (!authorteam) return message.channel.send(`:x: Team introuvable !`)
     let rep = JSON.parse(authorteam.coins).rep

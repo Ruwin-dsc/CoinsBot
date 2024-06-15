@@ -24,7 +24,7 @@ exports.run = async (bot, message, args, config, data) => {
         if (finallb.length >= 15) return message.channel.send(`Votre team ne peut avoir que 15 membres maximum !`)
       }
       const memberData = finallb.find(({ user }) => user === message.author.id);
-      if (memberData[1].rank === "3") return message.channel.send(`:warning: Vous devez être Officier ou Leader de la team pour inviter !`)
+      if (memberData.rank === "3") return message.channel.send(`:warning: Vous devez être Officier ou Leader de la team pour inviter !`)
 
       const row = new Discord.ActionRowBuilder()
         .addComponents(

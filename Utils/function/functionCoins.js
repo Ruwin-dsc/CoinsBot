@@ -22,23 +22,23 @@ function addcoins(bot, message, args, userId, coins, type) {
     const req = checkuser(bot, message, args, userId)
     if(type == 'coins') {
         const json = {
-            'coins': parseInt(JSON.parse(req.coins).coins) + parseInt(coins),
+            'coins': Number(JSON.parse(req.coins).coins) + Number(coins),
             'bank': JSON.parse(req.coins).bank,
             'rep': JSON.parse(req.coins).rep
         }
         bot.db.prepare(`UPDATE user SET coins = @coins WHERE id = @id`).run({ coins: JSON.stringify(json), id: userId});
     } else if(type == 'bank') {
         const json = {
-            'coins': parseInt(JSON.parse(req.coins).coins),
-            'bank': JSON.parse(req.coins).bank + parseInt(coins),
+            'coins': Number(JSON.parse(req.coins).coins),
+            'bank': JSON.parse(req.coins).bank + Number(coins),
             'rep': JSON.parse(req.coins).rep
         }
         bot.db.prepare(`UPDATE user SET coins = @coins WHERE id = @id`).run({ coins: JSON.stringify(json), id: userId});
     } else if(type == 'rep') {
         const json = {
-            'coins': parseInt(JSON.parse(req.coins).coins),
+            'coins': Number(JSON.parse(req.coins).coins),
             'bank': JSON.parse(req.coins).bank,
-            'rep': JSON.parse(req.coins).rep + parseInt(coins)
+            'rep': JSON.parse(req.coins).rep + Number(coins)
         }
         bot.db.prepare(`UPDATE user SET coins = @coins WHERE id = @id`).run({ coins: JSON.stringify(json), id: userId});
     } else if(type == 'drugs') {
@@ -54,23 +54,23 @@ function removecoins(bot, message, args, userId, coins, type) {
     const req = checkuser(bot, message, args, userId)
     if(type == 'coins') {
         const json = {
-            'coins': parseInt(JSON.parse(req.coins).coins) - parseInt(coins),
+            'coins': Number(JSON.parse(req.coins).coins) - Number(coins),
             'bank': JSON.parse(req.coins).bank,
             'rep': JSON.parse(req.coins).rep
         }
         bot.db.prepare(`UPDATE user SET coins = @coins WHERE id = @id`).run({ coins: JSON.stringify(json), id: userId});
     } else if(type == 'bank') {
         const json = {
-            'coins': parseInt(JSON.parse(req.coins).coins),
-            'bank': JSON.parse(req.coins).bank - parseInt(coins),
+            'coins': Number(JSON.parse(req.coins).coins),
+            'bank': JSON.parse(req.coins).bank - Number(coins),
             'rep': JSON.parse(req.coins).rep
         }
         bot.db.prepare(`UPDATE user SET coins = @coins WHERE id = @id`).run({ coins: JSON.stringify(json), id: userId});
     } else if(type == 'rep') {
         const json = {
-            'coins': parseInt(JSON.parse(req.coins).coins),
+            'coins': Number(JSON.parse(req.coins).coins),
             'bank': JSON.parse(req.coins).bank,
-            'rep': JSON.parse(req.coins).rep - parseInt(coins)
+            'rep': JSON.parse(req.coins).rep - Number(coins)
         }
         bot.db.prepare(`UPDATE user SET coins = @coins WHERE id = @id`).run({ coins: JSON.stringify(json), id: userId});
     }
@@ -208,7 +208,7 @@ function removeminerais(bot, message, args, userId, number, type) {
 }
 
 function checkteam(bot, message, args, teamName) {
-    let req = bot.db.prepare('SELECT * FROM team WHERE id = ?').get(teamName.toLowerCase())
+    let req = bot.db.prepare('SELECT * FROM team WHERE id = ?').get(teamName?.toLowerCase())
     if(!req) return false
     else return req
 }
@@ -226,8 +226,8 @@ function addteam(bot, message, args, teamName, number, type) {
     let req = checkteam(bot, message, args, teamName)
     if(type == "rep" || type == "coins") {
         const json = {
-            'coins': type == "coins" ? parseInt(JSON.parse(req.coins).coins) + number : parseInt(JSON.parse(req.coins).coins),
-            'rep': type == "rep" ? parseInt(JSON.parse(req.coins).rep) + number : parseInt(JSON.parse(req.coins).rep)
+            'coins': type == "coins" ? Number(JSON.parse(req.coins).coins) + number : Number(JSON.parse(req.coins).coins),
+            'rep': type == "rep" ? Number(JSON.parse(req.coins).rep) + number : Number(JSON.parse(req.coins).rep)
         }
         bot.db.prepare(`UPDATE team SET coins = @coins WHERE id = @id`).run({ coins: JSON.stringify(json), id: teamName.toLowerCase()});
     } else if(type == "member") {
@@ -243,8 +243,8 @@ function removeteam(bot, message, args, teamName, number, type) {
     let req = checkteam(bot, message, args, teamName)
     if(type == "rep" || type == "coins") {
         const json = {
-            'coins': type == "coins" ? parseInt(JSON.parse(req.coins).coins) - number : parseInt(JSON.parse(req.coins).coins),
-            'rep': type == "rep" ? parseInt(JSON.parse(req.coins).rep) - number : parseInt(JSON.parse(req.coins).rep)
+            'coins': type == "coins" ? Number(JSON.parse(req.coins).coins) - number : Number(JSON.parse(req.coins).coins),
+            'rep': type == "rep" ? Number(JSON.parse(req.coins).rep) - number : Number(JSON.parse(req.coins).rep)
         }
         bot.db.prepare(`UPDATE team SET coins = @coins WHERE id = @id`).run({ coins: JSON.stringify(json), id: teamName.toLowerCase()});
     } else if(type == "member") {

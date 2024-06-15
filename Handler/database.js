@@ -50,7 +50,7 @@ module.exports = () => {
         logo TEXT DEFAULT NULL,
         banner TEXT DEFAULT NULL,
         upgrade TEXT DEFAULT NULL,
-        army TEXT DEFAULT '0',
+        army TEXT DEFAULT '10',
         trainlevel TEXT DEFAULT '1',
         blesses TEXT DEFAULT '0'
     )`);
