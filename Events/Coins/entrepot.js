@@ -20,7 +20,7 @@ module.exports = {
                         let json = JSON.parse(user.batiment).batiments
                         if(parseInt(json.count) > JSON.parse(guildDB.gain).entrepotMax) return
                         json["count"] = parseInt(json.count) + cashGain
-                        bot.db.prepare(`UPDATE guild SET batiment = @coins WHERE id = @id`).run({ coins: JSON.stringify(json), id: user.id});
+                        bot.db.prepare(`UPDATE user SET batiment = @coins WHERE id = @id`).run({ coins: JSON.stringify(json), id: user.id});
                     } 
                   }
                 }

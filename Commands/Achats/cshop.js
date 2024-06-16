@@ -8,7 +8,7 @@ exports.help = {
   category: 'Achats'
 }
 exports.run = async (bot, message, args, config, data) => {
-    let shop = JSON.parse(data.cshop)
+    let shop = JSON.parse(data.cshop), number = 0
     if (shop.length > 0) {
         const roww = new Discord.ActionRowBuilder()
             .addComponents(
@@ -21,9 +21,10 @@ exports.run = async (bot, message, args, config, data) => {
                 {
                     label: `${x.name}`,
                     description: `Prix: ${x.cost}`,
-                    value: `${x.id}`
+                    value: `${x.id}-${number}`
                 }
             ]);
+            number++
             return `${x.name} ( <@&${x.id}> ) \n \`Prix: ${x.cost} coins\``;
         });
 
@@ -104,7 +105,7 @@ exports.run = async (bot, message, args, config, data) => {
             })
             collectorr.on("collect", async (select) => {
                 if (select.user.id !== message.author.id) return select.reply({ content: "Vous n'avez pas la permission !", ephemeral: true }).catch(() => { })
-                const value = select.values[0]
+                const value = select.values[0].split('-')[0]
 
                 let item = shop.filter(j => j.id == value)
                 roww.components[0].setDisabled(true);

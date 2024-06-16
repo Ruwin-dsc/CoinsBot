@@ -26,7 +26,7 @@ exports.run = async (bot, message, args, config, data) => {
         let difarr = JSON.parse(data.cshop)
 
         if (value === 'remove') {
-          message.channel.send(`:eyes: Veuillez entrer le numéro de l'item à retirer:`);
+          message.channel.send(`:eyes: Veuillez entrer le nom de l'item à retirer:`);
           message.channel.awaitMessages({ filter: dureefiltrer, max: 1, time: 30000, errors: ['time'] })
             .then(async cld => {
               const msg = cld.first();
