@@ -106,7 +106,7 @@ async function LB(message, medit, type) {
     }
     const embed = new Discord.EmbedBuilder()
         .setAuthor({ name: `Leaderboard des ${type} sur ${message.guild.name}`, iconURL: "https://media.discordapp.net/attachments/1249042420163674153/1250433684721500220/1f911.png?ex=666aec9e&is=66699b1e&hm=ff58c9f200b61ac0e833671620dfdbc6b488d5a88bfef93a0b7d860979d426a0&=&format=webp&quality=lossless&width=921&height=921" })
-        .setDescription(finalLb == "" ? finalLb : "Aucune donnée")
+        .setDescription(finalLb !== "" ? finalLb : "Aucune donnée")
         .setColor(data.color)
         .setFooter({ text: `${message.member.user.username}`, iconURL: message.member.user.displayAvatarURL({ dynamic: true }) });
 
