@@ -237,8 +237,8 @@ function addteam(bot, message, args, teamName, number, type) {
     let req = checkteam(bot, message, args, teamName)
     if(type == "rep" || type == "coins") {
         const json = {
-            'coins': type == "coins" ? Number(JSON.parse(req.coins).coins) + number : Number(JSON.parse(req.coins).coins),
-            'rep': type == "rep" ? Number(JSON.parse(req.coins).rep) + number : Number(JSON.parse(req.coins).rep)
+            'coins': type == "coins" ? Number(JSON.parse(req.coins).coins) + Number(number) : Number(JSON.parse(req.coins).coins),
+            'rep': type == "rep" ? Number(JSON.parse(req.coins).rep) + Number(number) : Number(JSON.parse(req.coins).rep)
         }
         bot.db.prepare(`UPDATE team SET coins = @coins WHERE id = @id`).run({ coins: JSON.stringify(json), id: teamName.toLowerCase()});
     } else if(type == "member") {
@@ -246,7 +246,7 @@ function addteam(bot, message, args, teamName, number, type) {
         array.push(number)
         bot.db.prepare(`UPDATE team SET members = @coins WHERE id = @id`).run({ coins: JSON.stringify(array), id: teamName.toLowerCase()});
     } else if(type == "cadenas") {
-        bot.db.prepare(`UPDATE team SET cadenas = @coins WHERE id = @id`).run({ coins: req.cadenas + number, id: teamName.toLowerCase()});
+        bot.db.prepare(`UPDATE team SET cadenas = @coins WHERE id = @id`).run({ coins: Number(req.cadenas) + Number(number), id: teamName.toLowerCase()});
     }
 }
 
