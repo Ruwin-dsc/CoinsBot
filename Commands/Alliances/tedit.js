@@ -81,7 +81,7 @@ exports.run = async (bot, message, args, config, data) => {
           let teamid = await removeNonLetters(name)
           if (name.length >= 25) return message.channel.send(`:x: Le nom peut contenir 25 caractères maximum: action annulée`)
           if (teamid.length <= 2) return message.channel.send(`:x: Nom de team invalide: action annulée`)
-          let uwu = (await getTeam(teamid, false, message.guild.id, false))
+          let uwu = (await bot.functions.checkteam(bot, message, args, teamid))
           if (uwu) return message.channel.send(`:x: Ce nom de team est déjà prit !`)
           if (name === "cancel" || name === "Cancel") { update(m); return message.channel.send(`:x: Action annulée`) }
           await team.update({ name: name }, { where: { primary: team.primary }});

@@ -37,7 +37,7 @@ exports.run = async (bot, message, args, config, data) => {
     let authorteam = bot.functions.checkUserTeam(bot, message, args, member.id)
     let teaminf = "Aucune"
     if(authorteam){
-      teaminf = `**${authorteam.name}** (${authorteam.id}) \`${authorteam.coins} coins\``
+      teaminf = `**${authorteam.name}** (${authorteam.id}) \`${JSON.parse(authorteam.coins).coins} coins\``
     }
 
     let maxentrepot = JSON.parse(data.gain).entrepotMax

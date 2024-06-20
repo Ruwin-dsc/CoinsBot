@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const blackjack = require("discord-blackjack-v14");
+const blackjack = require("whitehall");
 var rslow = require('../../Utils/function/roulette');
 
 exports.help = {
@@ -46,27 +46,17 @@ exports.run = async (bot, message, args, config, data) => {
 
     bot.functions.removeCoins(bot, message, args, message.author.id, money, 'coins')
 
-    const embed = {
-        title: "BlackJack 🎲",
-        color: (data.color.replace('#', ''), 16),
-        fields: [
-          {
-            name: "Votre main",
-            value: `Cartes: {yourcontent}\nTotal: {yvalue}`,
-            inline: true
-          },
-          {
-            name: `Main de ${bot.user.username}`,
-            value: `Cartes: {dcontent}\nTotal: {dvalue}`,
-            inline: true
-          }
-        ],
-        footer: {
-          text: `${user.username}, si vous abandonnez la partie, seulement 50% de vos coins vous seront remboursés !`
-        }
-    };
+    let embed = {
+      title: "BlackJack 🎲",
+      fields: [
+          { name: `Votre main`, value: "", inline: true },
+          { name: `‎`, value: "‎", inline: true },
+          { name: `Main de ${bot.user.username}`, value: "", inline: true }
+      ],
+      footer: { text: `${message.author.username}, si vous abandonnez la partie, seulement 50% de vos coins vous seront remboursés !`}
+  }
 
-    const game = await blackjack(message, { normalEmbed: false, normalEmbedContent: embed, resultEmbed: false });
+    const game = await blackjack(message, {resultEmbed: false, normalEmbed: false, normalEmbedContent: embed});
     rslow.roulette[message.author.id] = true
     switch (game.result) {
       default: 
