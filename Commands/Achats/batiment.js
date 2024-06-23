@@ -13,7 +13,7 @@ exports.run = async (bot, message, args, config, data) => {
     let bats = JSON.parse(memberDB.batiment).batiments
     
     let batarray = []
-    for (i in items.bat) {
+    for (const i in items.bat) {
       batarray.push(`**${i}:** ${bats.includes(i) ? "Possédé" : "Non Possédé"}`)
     }
 
