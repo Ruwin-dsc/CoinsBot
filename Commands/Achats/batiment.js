@@ -17,7 +17,7 @@ exports.run = async (bot, message, args, config, data) => {
       batarray.push(`**${i}:** ${bats.includes(i) ? "Possédé" : "Non Possédé"}`)
     }
 
-    dureefiltrer = response => { return response.author.id === message.author.id };
+    let dureefiltrer = response => { return response.author.id === message.author.id };
     let maxentrepot = JSON.parse(data.gain).entrepotMax
     let total = JSON.parse(memberDB.batiment).count
     if (!total) total = 0
