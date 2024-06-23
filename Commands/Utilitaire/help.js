@@ -97,7 +97,7 @@ exports.run = async (bot, message, args, config, data) => {
             if (category) {
                 const commandsFiles = fs.readdirSync(`./Commands/${category}`).filter(file => file.endsWith('.js'))
                 for (const commandFile of commandsFiles) {
-                    const command = require(`../Commands/${category}/${commandFile}`)
+                    const command = require(`../../Commands/${category}/${commandFile}`)
                     array.push(`\`${data.prefix}${command.help.use !== 'Pas d\'utilisation conseillée' ? command.help.use : command.help.name}\`\n┖ ${command.help.description}`)
                 }
             }
