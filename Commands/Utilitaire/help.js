@@ -95,9 +95,9 @@ exports.run = async (bot, message, args, config, data) => {
         function embed(title, description, category, image) {
             let array = []
             if (category) {
-                const commandsFiles = fs.readdirSync(`././commands/${category}`).filter(file => file.endsWith('.js'))
+                const commandsFiles = fs.readdirSync(`./Commands/${category}`).filter(file => file.endsWith('.js'))
                 for (const commandFile of commandsFiles) {
-                    const command = require(`../../commands/${category}/${commandFile}`)
+                    const command = require(`../Commands/${category}/${commandFile}`)
                     array.push(`\`${data.prefix}${command.help.use !== 'Pas d\'utilisation conseillée' ? command.help.use : command.help.name}\`\n┖ ${command.help.description}`)
                 }
             }
